@@ -6,15 +6,12 @@ module ActiveSphere
 
 			def initialize(key)
 				@key = generate_hash(key)
+
 			end
 
 			def process
-				if @@data.size > 0
-					if Engine.data["#{key}"]
-						Engine.data["#{key}"][:counter] = Time.now.to_i
-						Engine.data["#{key}"][:value] 
-					end
-				end
+			  server = find_server(@key)
+			  server.nodes[@key][:value]
 			end
 
 		end

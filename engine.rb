@@ -1,5 +1,8 @@
+require_relative './commons'
 module ActiveSphere
 	class Engine
+
+	  include Commons
 
 		@@data = {}
 
@@ -25,7 +28,7 @@ module ActiveSphere
 
 		# Free data less than memory, uses LRU
 		def self.free
-			key_to_remove = @@data.sort_by{ |k,v| v[:counter] }.flatten[0]
+			key_to_remove = @@data.sort_by{ |k,v| v.value[:counter] }.flatten[0]
 			@@data.delete key_to_remove
 		end
 
@@ -38,10 +41,27 @@ module ActiveSphere
 			 Engine.size > @@memory
 		end
 
-		# Create hash of the key
-		def generate_hash(key)
-			Digest::MD5.hexdigest(key)
-		end
+    def self.remap
+      @@servers.each_with_index do |server, index|
+        if index != @@servers.size
+          server.next = @@servers[index+1] 
+        else
+          server.next = @@servers[0]
+        end
+
+        server.prev = @@servers[index-1] if index > 0
+      end
+    end
+
+    def find_server(key)
+      ActiveSphere::Engine.servers.each do |server|
+        if key > server.machine
+          return server
+        end
+      end
+
+      ActiveSphere::Engine.servers.first
+    end
 
 	end
 end

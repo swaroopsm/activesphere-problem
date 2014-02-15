@@ -2,7 +2,7 @@ module ActiveSphere
 	module Command
 		class Base < ActiveSphere::Engine
 
-			attr_accessor :input, :command
+			attr_accessor :input, :command, :server
 
 			COMMANDS = %w( set get all flush )
 			
