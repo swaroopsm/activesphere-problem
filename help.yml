@@ -7,6 +7,10 @@ command:
     syntax: rm-server <server-name>
     description: Removes a previously added server from the ring.
 
+  servers:
+    syntax: servers
+    description: List all servers
+
   set:
     syntax: set <key> <value>
     description: Sets/Stores a <key> with <value> in memory.
