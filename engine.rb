@@ -19,6 +19,9 @@ module ActiveSphere
 
     def servers=(server)
       @servers << server
+      @servers.sort_by!{ |server| server.machine }
+
+      server.remap(self)
     end
 
 		# Free data less than memory, uses LRU

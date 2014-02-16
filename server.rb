@@ -17,6 +17,31 @@ module ActiveSphere
       @nodes[node.key] = node.value
     end
 
+    def remap(engine)
+      @engine = engine
+      current_index = engine.servers.index(self)
+
+      unless self.first?
+        self.prev = engine.servers[current_index - 1] 
+      else
+        self.prev = engine.servers.last
+      end
+
+      self.next = engine.servers[current_index + 1] unless self.last?
+    end
+
+    def first?
+      if @engine
+        self.equal? @engine.servers.first
+      end
+    end
+
+    def last?
+      if @engine
+        self.equal? @engine.servers.last
+      end
+    end
+
     def migrate_nodes
       self.next.nodes.merge!(self.nodes)
       self.next.prev = self.prev
