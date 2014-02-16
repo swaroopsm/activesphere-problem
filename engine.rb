@@ -1,4 +1,5 @@
 require_relative './commons'
+
 module ActiveSphere
 	class Engine
 
@@ -6,25 +7,19 @@ module ActiveSphere
 
 		@@data = {}
 
-		def self.memory=(memory)
-			@@memory = memory.to_f * 1024 * 1024
-		end
+    attr_accessor :name, :memory, :servers
 
-		def self.memory
-			@@memory
-		end
+    def initialize
+      @servers = []
+    end
 
-		def self.servers=(servers)
-			@@servers = servers
-		end
+    def memory=(memory)
+      @memory = memory.to_f * 1024 * 1024
+    end
 
-		def self.servers
-			@@servers
-		end
-
-		def self.data
-			@@data
-		end
+    def servers=(server)
+      @servers << server
+    end
 
 		# Free data less than memory, uses LRU
 		def self.free
