@@ -38,11 +38,9 @@ module ActiveSphere
 					  server = Server.new(@input[1], @engine)
 					  @engine.servers = server
 					when COMMANDS[6]
-					  @engine.servers.map do |server|
-              if server.name == @input[1]
-                server.destroy
-              end
-            end
+					  server = @engine.find(@input[1])
+
+					  server[:server].remove(server[:index]) if server
 					when COMMANDS[7]
 					  @engine.servers.each{ |server| print "- #{server.name}\n".colorize(:default).bold }
 					end

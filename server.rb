@@ -27,7 +27,12 @@ module ActiveSphere
         self.prev = @engine.servers.last
       end
 
-      self.next = @engine.servers[current_index + 1] unless self.last?
+      if self.last?
+        self.next = @engine.servers.first
+      else
+        self.next = @engine.servers[current_index + 1]
+      end
+
     end
 
     def first?
@@ -44,11 +49,10 @@ module ActiveSphere
       self.next.prev = self.prev if self.prev
     end
 
-    def remove
+    def remove(index)
       self.migrate_nodes
 
-      index = @engine.servers.index(self)
-      @engine.servers.delete(index)
+      @engine.servers.delete_at(index)
     end
 
   end
