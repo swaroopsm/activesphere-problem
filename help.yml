@@ -1,0 +1,20 @@
+command:
+  add-server:
+    syntax: add-server <server-name>
+    description: Adds a server to the existing ring.
+
+  rm-server:
+    syntax: rm-server <server-name>
+    description: Removes a previously added server from the ring.
+
+  set:
+    syntax: set <key> <value>
+    description: Sets/Stores a <key> with <value> in memory.
+
+  get:
+    syntax: get <key>
+    description: Retrieve value of a specified key.
+
+  flush:
+    syntax: flush
+    description: Clear key/values form all the servers.
