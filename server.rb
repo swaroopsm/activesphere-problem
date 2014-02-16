@@ -41,13 +41,14 @@ module ActiveSphere
 
     def migrate_nodes
       self.next.nodes.merge!(self.nodes)
-      self.next.prev = self.prev
+      self.next.prev = self.prev if self.prev
     end
 
-    def destroy
-      servers = ActiveSphere::Engine.servers
+    def remove
       self.migrate_nodes
-      ActiveSphere::Engine.servers = servers - [self]
+
+      index = @engine.servers.index(self)
+      @engine.servers.delete(index)
     end
 
   end
