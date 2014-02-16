@@ -2,11 +2,14 @@
 
 require "digest"
 require "objspace"
+require "yaml"
+require "colorize"
 
 require_relative "engine"
 require_relative "command/base"
 require_relative "command/set"
 require_relative "command/get"
+require_relative "command/help"
 require_relative "server"
 require_relative "commons"
 
@@ -16,25 +19,29 @@ arguments.each{ |a| raise "Invalid Flag" unless ALLOWED_FLAGS.include? a[0] }
 hashed = {}
 arguments.each{ |a| hashed[a[0]] = a[1] }
 
-ActiveSphere::Engine.memory = hashed["-m"]
+@falcon = ActiveSphere::Engine.new
+@falcon.name = "Falcon"
+@falcon.memory = hashed["-m"]
 
-# Insert x servers
-servers = [ "192.168.1.1", "192.168.1.2" ]
-ActiveSphere::Engine.servers = servers.map{ |s| ActiveSphere::Server.new(s) }.sort_by{ |s| s.machine }
-ActiveSphere::Engine.remap
+# Assume some initial server
+server = ActiveSphere::Server.new("192.168.1.1")
+@falcon.servers = server
+
+# ActiveSphere::Engine.remap
 
 def get_input
   print "Type :q to quit\n"
-  while true
+  print "Type help for a list of commands\n"
+  loop do
     input = $stdin.gets.chomp
 
-    (input == ":q") ? return : ActiveSphere::Command::Base.new(input).process
+    (input == ":q") ? return : ActiveSphere::Command::Base.new(input, @falcon).process
   end
 end
 
 get_input
 
-server1 = ActiveSphere::Engine.servers.first
-server1.destroy
-
-get_input
+# server1 = ActiveSphere::Engine.servers.first
+# server1.destroy
+# 
+# get_input
