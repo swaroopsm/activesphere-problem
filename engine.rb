@@ -59,13 +59,13 @@ module ActiveSphere
     end
 
     def find_server(key)
-      ActiveSphere::Engine.servers.each do |server|
+      self.servers.each do |server|
         if key > server.machine
           return server
         end
       end
 
-      ActiveSphere::Engine.servers.first
+      self.servers.first
     end
 
 	end
