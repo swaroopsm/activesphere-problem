@@ -21,9 +21,9 @@ module ActiveSphere
 				if valid?
 					case @command
 					when COMMANDS[0]
-						Set.new(@input[1], @input[2]).process
+						Set.new(@input[1], @input[2]).process(@engine)
 					when COMMANDS[1]
-						print Get.new(@input[1]).process
+						print Get.new(@input[1]).process(@engine)
 						print "\n"
 					when COMMANDS[2]
 						print Engine.data
