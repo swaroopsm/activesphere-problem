@@ -1,12 +1,18 @@
+require_relative '../commons'
+
 module ActiveSphere
 	module Command
-		class Base < ActiveSphere::Engine
+		class Base
+
+		  include Commons
 
 			attr_accessor :input, :command, :server
+			attr_reader   :engine
 
-			COMMANDS = %w( set get all flush )
+			COMMANDS = %w( set get all flush help add-server rm-server servers )
 			
-			def initialize(input)
+			def initialize(input, engine)
+			  @engine = engine
 				@input = input
 				@command = parse_command
 			end
@@ -25,6 +31,20 @@ module ActiveSphere
 					when COMMANDS[3]
 						flush
 						print "\n"
+					when COMMANDS[4]
+					  help = Help.new
+					  help.all
+					when COMMANDS[5]
+					  server = Server.new(@input[1])
+					  @engine.servers = server
+					when COMMANDS[6]
+					  @engine.servers.map do |server|
+              if server.name == @input[1]
+                server.destroy
+              end
+            end
+					when COMMANDS[7]
+					  @engine.servers.each{ |server| print "- #{server.name}\n".colorize(:default).bold }
 					end
 				end
 			end
