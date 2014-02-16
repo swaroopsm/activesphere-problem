@@ -7,15 +7,15 @@ module ActiveSphere
 			def initialize(key, value)
 				@key = generate_hash(key)
 				@value = { :value => value, :counter => Time.now.to_i }
-				self.server = find_server(@key)
-				self.server.nodes = self
 			end
 
-			def process
-				if Engine.overflow?
-					Engine.free
-				end
-				Engine.data[@key] = self
+			def process(engine)
+				self.server = engine.find_server(@key)
+				self.server.nodes = self
+
+				# if @engine.overflow?
+				# 	@engine.free
+				# end
 			end
 
 		end

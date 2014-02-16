@@ -9,9 +9,10 @@ module ActiveSphere
 
 			end
 
-			def process
-			  server = find_server(@key)
-			  server.nodes[@key][:value]
+			def process(engine)
+			  server = engine.find_server(@key)
+			  server.nodes
+			  # server.nodes[@key][:value]
 			end
 
 		end
