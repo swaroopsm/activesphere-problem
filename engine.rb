@@ -24,6 +24,13 @@ module ActiveSphere
       server.remap
     end
 
+    # Find Server by name
+    def find(name)
+      self.servers.each_with_index{ |server, index| return { :server => server, :index => index } if server.name == name }
+
+      nil
+    end
+
 		# Free data less than memory, uses LRU
 		def self.free
 			key_to_remove = @@data.sort_by{ |k,v| v.value[:counter] }.flatten[0]
