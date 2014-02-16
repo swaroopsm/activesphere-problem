@@ -24,7 +24,7 @@ arguments.each{ |a| hashed[a[0]] = a[1] }
 @falcon.memory = hashed["-m"]
 
 # Assume some initial server
-server = ActiveSphere::Server.new("192.168.1.1")
+server = ActiveSphere::Server.new("192.168.1.1", @falcon)
 @falcon.servers = server
 
 # ActiveSphere::Engine.remap

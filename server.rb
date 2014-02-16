@@ -7,7 +7,8 @@ module ActiveSphere
 
     attr_accessor :machine, :name, :nodes, :prev, :next
 
-    def initialize(name)
+    def initialize(name, engine)
+      @engine = engine
       @name = name
       @machine = generate_hash(@name)
       @nodes = {}
@@ -17,29 +18,25 @@ module ActiveSphere
       @nodes[node.key] = node.value
     end
 
-    def remap(engine)
-      @engine = engine
-      current_index = engine.servers.index(self)
+    def remap
+      current_index = @engine.servers.index(self)
 
       unless self.first?
-        self.prev = engine.servers[current_index - 1] 
+        self.prev = @engine.servers[current_index - 1] 
       else
-        self.prev = engine.servers.last
+        self.prev = @engine.servers.last
       end
 
-      self.next = engine.servers[current_index + 1] unless self.last?
+      self.next = @engine.servers[current_index + 1] unless self.last?
     end
 
     def first?
-      if @engine
-        self.equal? @engine.servers.first
-      end
+      self.equal? @engine.servers.first
     end
 
     def last?
-      if @engine
-        self.equal? @engine.servers.last
-      end
+      self.equal? @engine.servers.last
+
     end
 
     def migrate_nodes

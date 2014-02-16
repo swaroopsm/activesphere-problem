@@ -35,7 +35,7 @@ module ActiveSphere
 					  help = Help.new
 					  help.all
 					when COMMANDS[5]
-					  server = Server.new(@input[1])
+					  server = Server.new(@input[1], @engine)
 					  @engine.servers = server
 					when COMMANDS[6]
 					  @engine.servers.map do |server|
