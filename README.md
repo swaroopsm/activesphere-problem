@@ -7,4 +7,4 @@
 Use `help` to get a list of all available commands
 
 
-**P.S.: An implementaion of consistenct hashing is implemented**
+**P.S.: An implementaion of consistenct hashing is included**
