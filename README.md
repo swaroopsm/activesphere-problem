@@ -4,27 +4,7 @@
 
 	-m: Memory to allocate in MegaBytes
 
-#### Operations Supported:
+Use `help` to get a list of all available commands
 
-**Set:**
 
-	Set a key/value.
-	Eg.: set name swaroop
-
-**Get:**
-
-	Get value by key
-	Eg.: get name
-
-**Flush:**
-	
-	Flushes/Clears all data
-	Eg.: flush
-
-**All:**
-	
-	Get All Data
-	Eg.: all
-
-Note:
-This also implements a LRU, when memory allocated is not sufficient.
+**P.S.: An implementaion of consistenct hashing is implemented**
