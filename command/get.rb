@@ -11,8 +11,11 @@ module ActiveSphere
 
 			def process(engine)
 			  server = engine.find_server(@key)
-			  server.nodes
-			  # server.nodes[@key][:value]
+			  begin
+			    server.nodes[@key][:value]
+        rescue Exception => e
+          e
+        end
 			end
 
 		end

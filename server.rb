@@ -19,38 +19,64 @@ module ActiveSphere
     end
 
     def remap
-      current_index = @engine.servers.index(self)
 
-      unless self.first?
-        self.prev = @engine.servers[current_index - 1] 
-      else
-        self.prev = @engine.servers.last
+      # Link next and prev for each node
+      @engine.servers.each_with_index do |server, index|
+        server.prev = @engine.servers.last if server.first? and server != @engine.servers.last
+        if server.last?
+          server.next = @engine.servers.first if server != @engine.servers.first
+          server.prev = @engine.servers[index-1] if server != @engine.servers.first
+        else
+          server.prev = @engine.servers[index-1] unless server.first?
+          server.next = @engine.servers[index+1]
+        end
       end
 
-      if self.last?
-        self.next = @engine.servers.first
-      else
-        self.next = @engine.servers[current_index + 1]
+      # If server is added at the first position in the ring
+      if self.first? and @engine.servers.size > 1
+        self.nodes.merge! self.next.nodes.select{ |k, v| k <= self.next.machine }
+        self.next.nodes.reject!{ |k, v| k <= self.next.machine }
       end
 
+      # If server is added at the last in the ring
+      if self.last? and !self.first? and self.next
+        self.nodes.merge! self.next.nodes.select{ |k, v| k >= self.machine }
+        self.next.nodes.reject!{ |k, v| k >= self.machine }
+      end
+
+      # If server is added between a position that is in-between two other servers in the ring
+      if !self.first? and !self.last?
+        self.nodes.merge! self.prev.nodes.select{ |k, v| k >= self.machine }
+        self.prev.nodes.reject!{ |k, v| k >= self.machine }
+
+        self.nodes.merge! self.next.nodes.select{ |k, v| k <= self.machine }
+        self.next.nodes.reject!{ |k, v| k <= self.machine }
+      end
     end
 
+    # Determine if first server in the ring
     def first?
       self.equal? @engine.servers.first
     end
 
+    # Determine if last server in the ring
     def last?
       self.equal? @engine.servers.last
-
     end
 
-    def migrate_nodes
-      self.next.nodes.merge!(self.nodes)
-      self.next.prev = self.prev if self.prev
-    end
+    # Remove a server from the ring
+    def remove(index, engine)
+      servers = engine.servers.reject{ |server| server == self  }
 
-    def remove(index)
-      self.migrate_nodes
+      # TODO: Don't know if this is right?
+      self.nodes.each do |k, v|
+        server = engine.find_server(k, {:ignore => self})
+        p server.name
+        server.nodes.merge!({k => v})
+      end
+
+      self.next.prev = self.prev
+      self.prev.next = self.next
 
       @engine.servers.delete_at(index)
     end

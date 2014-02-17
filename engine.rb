@@ -58,14 +58,16 @@ module ActiveSphere
       end
     end
 
-    def find_server(key)
-      self.servers.each do |server|
-        if key > server.machine
-          return server
+    def find_server(key, options={})
+      servers = []
+      all_servers = options[:ignore] ? self.servers.reject{ |server| server == options[:ignore] } : self.servers
+      all_servers.each do |server|
+        if key >= server.machine
+          servers << server
         end
       end
 
-      self.servers.first
+      servers.size > 0 ? servers.sort_by{ |server| server.machine }.last : all_servers.first
     end
 
 	end

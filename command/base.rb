@@ -40,9 +40,11 @@ module ActiveSphere
 					when COMMANDS[6]
 					  server = @engine.find(@input[1])
 
-					  server[:server].remove(server[:index]) if server
+					  server[:server].remove(server[:index], @engine) if server
 					when COMMANDS[7]
-					  @engine.servers.each{ |server| print "- #{server.name}\n".colorize(:default).bold }
+					  @engine.servers.each do |server|
+					    print "- #{server.name}\n".colorize(:default).bold
+            end
 					end
 				end
 			end
