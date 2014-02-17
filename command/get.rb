@@ -14,7 +14,7 @@ module ActiveSphere
 			  begin
 			    server.nodes[@key][:value]
         rescue Exception => e
-          e
+          print "\nNot Found \n".colorize(:default).bold
         end
 			end
 

@@ -29,7 +29,7 @@ module ActiveSphere
 						print Engine.data
 						print "\n"
 					when COMMANDS[3]
-						flush
+						@engine.flush!
 						print "\n"
 					when COMMANDS[4]
 					  help = Help.new
@@ -52,10 +52,6 @@ module ActiveSphere
 
 			def valid?
 				COMMANDS.include? @command
-			end
-
-			def flush
-				Engine.data.clear
 			end
 
 			private

@@ -18,6 +18,11 @@ module ActiveSphere
       @nodes[node.key] = node.value
     end
 
+    # Clear key/value objects of a server
+    def clear
+      @nodes = {}
+    end
+
     def remap
 
       # Link next and prev for each node

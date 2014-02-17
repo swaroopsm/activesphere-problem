@@ -24,6 +24,13 @@ module ActiveSphere
       server.remap
     end
 
+    # Clear all key/value objects
+    def flush!
+      self.servers.each do |server|
+        server.clear
+      end
+    end
+
     # Find Server by name
     def find(name)
       self.servers.each_with_index{ |server, index| return { :server => server, :index => index } if server.name == name }

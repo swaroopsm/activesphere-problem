@@ -34,7 +34,7 @@ print "\nConncting to #{ip_address} ... \n\n"
 
 def get_input
   print "Type :q to quit\n"
-  print "Type help for a list of commands\n"
+  print "Type help for a list of commands\n\n"
   loop do
     input = $stdin.gets.chomp
 
