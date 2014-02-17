@@ -42,6 +42,7 @@ module ActiveSphere
 
 					  server[:server].remove(server[:index], @engine) if server
 					when COMMANDS[7]
+					  p "Size: #{@engine.size}"
 					  @engine.servers.each do |server|
 					    print "- #{server.name}\n".colorize(:default).bold
             end

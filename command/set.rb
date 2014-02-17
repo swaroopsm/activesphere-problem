@@ -13,6 +13,7 @@ module ActiveSphere
 				self.server = engine.find_server(@key)
 				self.server.nodes = self
 
+        # TODO
 				# if @engine.overflow?
 				# 	@engine.free
 				# end

@@ -37,26 +37,17 @@ module ActiveSphere
 			@@data.delete key_to_remove
 		end
 
-		def self.size
-			ObjectSpace.memsize_of(@@data)
+    # TODO
+    # Find Memory Size
+		def size
+
 		end
 
+    # TODO
 		# Check if exceeded specified memory
-		def self.overflow?
-			 Engine.size > @@memory
+		def overflow?
+
 		end
-
-    def self.remap
-      @@servers.each_with_index do |server, index|
-        if index != @@servers.size
-          server.next = @@servers[index+1] 
-        else
-          server.next = @@servers[0]
-        end
-
-        server.prev = @@servers[index-1] if index > 0
-      end
-    end
 
     def find_server(key, options={})
       servers = []
